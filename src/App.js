@@ -5,8 +5,8 @@ import Webcam from "react-webcam";
 import axios from 'axios';
 
 const http = axios.create({
-  // baseURL: "https://prioritaskapi-v2.herokuapp.com/api",?
-  baseURL: "http://localhost:8080/api",
+  baseURL: "https://poemotion-api.herokuapp.com//api",
+  // baseURL: "http://localhost:8080/api",
   headers: {
     "Content-type": "application/json"
   }
