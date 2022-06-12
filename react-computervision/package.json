@@ -1,5 +1,5 @@
 {
-  "name": "ai_face_detection",
+  "name": "react-computervision",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -37,5 +37,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }
