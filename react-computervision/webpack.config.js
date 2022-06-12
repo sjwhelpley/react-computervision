@@ -1,3 +1,0 @@
-config.node = {
-    fs: 'empty',
-}
