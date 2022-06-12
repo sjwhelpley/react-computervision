@@ -1,10 +1,12 @@
 .app { 
     display: flex; 
     width: 100vw; 
-    height: 100vh; 
+    min-height: 100vh; 
     flex-direction: column; 
     align-items: center;
     font-family: 'Roboto', sans-serif;
+    background-color: #f2e9e4;
+    color: #22223b;
 }
 
 .main {
@@ -22,9 +24,34 @@
     margin-top: 20px;
 }
 
+.poem {
+    text-align: center;
+}
+
 button {
-    background-color: aquamarine;
+    background-color: #4a4e69;
+    color: white;
     padding: 10px;
     border: 0;
     border-radius: 3px;
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #383636; /* Black */
+    border-radius: 50%;
+    animation: spinner 1.5s linear infinite;
+    position: absolute;
+    top: 50%;
 }

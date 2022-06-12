@@ -57,8 +57,9 @@ function App() {
             setImg(getScreenshot());
             setImgSelected(true);
           }}
+          style={{ marginTop: '20px' }}
         >
-          Capture photo
+          Capture Photo
         </button>
       )}
     </Webcam>
@@ -66,13 +67,15 @@ function App() {
 
   const getFaceExpression = async () => {
     const input = document.getElementById("faceInput");
-    // loading
+    setLoading(true);
     const detectionsWithExpressions = await faceapi.detectAllFaces(input, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions();
-    console.log(detectionsWithExpressions);
     const expression = getExpression(detectionsWithExpressions)
     setExpression(expression);
-    http.post('/getPoem', { expression }).then((response) => { console.log(response.data.result); setPoem(response.data.result) })
-    // stop loading
+    http.post('/getPoem', { expression }).then((response) => {
+      console.log(response.data.result);
+      setPoem(response.data.result);
+      setLoading(false);
+    })
   }
 
   const getExpression = (obj) => {
@@ -80,36 +83,98 @@ function App() {
     return Object.keys(expressionsObj).reduce((a, b) => expressionsObj[a] > expressionsObj[b] ? a : b);
   }
 
+  const getColors = () => {
+    switch (exp) {
+      case 'happy':
+        return { background: '#fdd85d', button: '#99d6ea' };
+      case 'sad':
+        return { background: '#669bbc', button: '#003049' };
+      case 'angry':
+        return { background: '#ad2831', button: '#38040e' };
+      case 'disgusted':
+        return { background: '#606c38', button: '#283618' };
+      case 'neutral':
+        return { background: '#bcb8b1', button: '#463f3a' };
+      default:
+        return { background: '#f2e9e4', button: '#4a4e69' }
+    }
+  }
+
+  // const getEmoji = () => {
+  //   switch (exp) {
+  //     case 'happy':
+  //       return 😄;
+  //     case 'sad':
+  //       return 😔;
+  //     case 'angry':
+  //       return 😠;
+  //     case 'disgusted':
+  //       return 🤢;
+  //     case 'neutral':
+  //       return 😐;
+  //     default:
+  //       return 🙂;
+  //   }
+  // }
+
   return (
-    <div className="app">
-      <h1>POEMOTION</h1>
+    <div className="app" style={{ backgroundColor: getColors().background }}>
+      {loading &&
+        <div className="loading-spinner">
+        </div>}
+      <h1 style={{ color: '#22223b', marginBottom: '10px' }}>POEMOTION</h1>
+      <p>Feeling a certain type of way? Take a picture of yourself to generate a poem based on your emotion!</p>
       {modelLoaded ?
-        <div className='main'>
-          {imgSelected ?
+        <div>
+          {!poem ?
             <div className='main'>
-              <img id="faceInput" src={img} />
-              <div className='row'>
-                <button
-                  onClick={() => {
-                    setImgSelected(false);
-                  }}
-                >
-                  Recapture photo
-                </button>
-                <button
-                  onClick={
-                    getFaceExpression
-                  }
-                >
-                  Continue...
-                </button>
-              </div>
-            </div> : <WebcamCapture />}
+              {imgSelected ?
+                <div className='main'>
+                  <img id="faceInput" src={img} />
+                  <div className='row'>
+                    <button
+                      onClick={() => {
+                        setImgSelected(false);
+                      }}
+                    >
+                      Try Again
+                    </button>
+                    <button
+                      onClick={
+                        getFaceExpression
+                      }
+                    >
+                      All Set!
+                    </button>
+                  </div>
+                </div> : <WebcamCapture />}
+            </div> : null}
         </div> : <p>Loading...</p>}
       {poem &&
-        <div style={{ whiteSpace: 'pre-line' }}>
-          <h2>{exp}</h2>
-          {poem}
+        <div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <div style={{ flex: 1 }}>
+              <img id="faceInput" src={img} style={{ width: '100%' }} />
+            </div>
+            <div className='poem' style={{ flex: 1 }}>
+              <h2 style={{ marginBottom: '-30px' }}>{exp} poem</h2>
+              <div style={{ whiteSpace: 'pre-line' }}>
+                <p>{poem}</p>
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <button
+              onClick={() => {
+                setImgSelected(false);
+                setPoem(null);
+                setExpression(null);
+              }}
+              style={{ backgroundColor: getColors().button }}
+            >
+              Try Again
+            </button>
+          </div>
         </div>}
     </div>
   );
