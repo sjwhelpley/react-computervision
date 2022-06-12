@@ -1,0 +1,20 @@
+{
+  "name": "react-computervision-api",
+  "version": "1.0.0",
+  "description": "Node.js RESTful CRUD API with Node.js, Express and Firebase",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Samantha Whelpley",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "got": "^11.8.0",
+    "mongoose": "^5.9.25",
+    "openai": "^3.0.0"
+  }
+}
